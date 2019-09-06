@@ -1,0 +1,44 @@
+.wrapper {
+	margin: auto;
+	min-width: 150px;
+	max-width: 500px;
+	padding-top: 10%;
+}
+
+.login-header {
+	border: {
+		style: solid;
+		width: 1px 1px 0 1px;
+		color: gray;
+	};
+	background: rgba(0, 0, 0, .03);
+	padding: 12px 24px;
+	margin: 0;
+}
+
+.login-form {
+	border: {
+		style: solid;
+		width: 1px;
+		color: gray;
+	};
+	display: flex;
+	flex-direction: column;
+	padding: 24px;
+
+	.mat-form-field {
+		margin-top: 12px;
+	}
+
+	.login-form-buttons {
+		margin-top: 24px;
+
+		.mat-raised-button {
+			width: 100px;
+		}
+
+		.mat-raised-button:nth-child(2) {
+			margin-left: 12px;
+		}
+	}
+}

@@ -1,0 +1,30 @@
+<div class="wrapper">
+	<h2 class="login-header">Login</h2>
+
+	<form [formGroup]="loginForm" (ngSubmit)="login()">
+
+		<div class="login-form">
+
+			<mat-form-field>
+				<input matInput placeholder="Username" formControlName="username">
+				<mat-hint *ngIf="loginForm.get('username').touched">
+					Correct username "zkzjNzKa"
+				</mat-hint>
+			</mat-form-field>
+
+			<mat-form-field>
+				<input matInput type="password" placeholder="Password" formControlName="password">
+				<mat-hint *ngIf="loginForm.get('password').touched">
+					Correct password "jCCmyTlxcFK6"
+				</mat-hint>
+			</mat-form-field>
+
+			<div class="login-form-buttons">
+				<button mat-raised-button color="primary" type="submit">login</button>
+				<button mat-raised-button color="primary" (click)="autoFill()" type="button">Auto-fill</button>
+			</div>
+
+		</div>
+
+	</form>
+</div>
