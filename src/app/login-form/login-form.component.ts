@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { AuthenticationService } from '../service/service';
 
 @Component({
 	selector: 'app-login-form',
@@ -12,6 +13,7 @@ export class LoginFormComponent implements OnInit {
 	loginForm: FormGroup;
 
 	constructor(private formBuilder: FormBuilder,
+				private authenticateService: AuthenticationService,
 				private router: Router) {
 
 		this.loginForm = formBuilder.group({
@@ -21,14 +23,17 @@ export class LoginFormComponent implements OnInit {
 	}
 
 	ngOnInit() {
+		localStorage.removeItem('token');
 	}
 
-	login() {
+	login(post) {
 
 		if (this.loginForm.invalid) {
-			return
+			return;
 		}
-		this.router.navigate(['content'])
+
+		this.authenticateService.login(post.username, post.password);
+		this.router.navigate(['content']);
 	}
 
 	autoFill() {
