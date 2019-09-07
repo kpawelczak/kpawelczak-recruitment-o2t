@@ -1,7 +1,9 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 
 
 @Injectable({ providedIn: 'root' })
@@ -16,26 +18,31 @@ export class AuthenticationService {
 
 	url = 'http://frontend-recruitment.one2tribe.pl:8080';
 
-	constructor(private http: HttpClient) {
+	constructor(private http: HttpClient,
+				private router: Router) {
+		this.addTokenToHeader();
 	}
 
 	login(username: string, password: string) {
 		return this.http.post(this.url + '/api/authenticate',
 			{ username: username, password: password },
 			{ observe: 'response' })
-
-				   .subscribe(
-					   (res) => {
-
-						   const bearerHeader = res.headers.get('authorization'),
-							   bearer = bearerHeader.split(' ');
+				   .pipe(
+					   tap((res) => {
+						   const bearerHeader = res.headers.get('authorization');
 						   localStorage.setItem('token', `${bearerHeader}`);
-						   console.log(bearer[1]);
+						   // bearer = bearerHeader.split(' ');
+						   // console.log(bearer[1]);
 
 						   this.httpOptions.headers =
 							   this.httpOptions.headers.set('Authorization', `${localStorage.getItem('token')}`);
+					   })
+				   );
+	}
 
-					   });
+	logout() {
+		localStorage.removeItem('token');
+		this.router.navigate(['login']);
 	}
 
 	getItems(): Observable<any> {
@@ -57,4 +64,12 @@ export class AuthenticationService {
 					   }
 				   );
 	}
+
+	addTokenToHeader() {
+		if (localStorage.getItem('token')) {
+			this.httpOptions.headers =
+				this.httpOptions.headers.set('Authorization', `${localStorage.getItem('token')}`);
+		}
+	}
+
 }

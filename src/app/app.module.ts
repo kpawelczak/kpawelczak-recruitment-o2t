@@ -1,25 +1,29 @@
+import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
+import { RouterModule } from '@angular/router';
+import { HttpClientModule } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
-import { HttpClientModule } from '@angular/common/http';
-import { LoginFormModule } from './login-form/login-form.module';
-import { RouterModule } from '@angular/router';
 import { routes } from './app.routes';
-import { ContentViewModule } from './content-view/content-view.module';
+
+import { LoginModule } from './login/login.module';
 
 
 @NgModule({
 	imports: [
+		BrowserModule,
+		BrowserAnimationsModule,
 		HttpClientModule,
-		LoginFormModule,
-		ContentViewModule,
+		LoginModule,
 		RouterModule.forRoot(routes)
 	],
 	declarations: [
 		AppComponent
 	],
-	providers: [],
-	bootstrap: [AppComponent]
+	bootstrap: [
+		AppComponent
+	]
 })
 export class AppModule {
 }

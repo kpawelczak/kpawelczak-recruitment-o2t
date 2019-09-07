@@ -2,12 +2,12 @@ import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 
-import { ContentViewComponent } from './content-view.component';
+import { LoginComponent } from './login.component';
 
 
 const routes = [{
 	path: '',
-	component: ContentViewComponent
+	component: LoginComponent
 }];
 
 @NgModule({
@@ -19,5 +19,5 @@ const routes = [{
 		RouterModule
 	]
 })
-export class ContentViewRoutingModule {
+export class LoginRoutingModule {
 }

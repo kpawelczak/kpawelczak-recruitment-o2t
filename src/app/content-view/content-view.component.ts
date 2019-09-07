@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthenticationService } from '../service/service';
+
+import { AuthenticationService } from '../login/authentication/authentication.service';
+
 
 @Component({
 	selector: 'app-content-view',
@@ -11,13 +13,11 @@ export class ContentViewComponent implements OnInit {
 	items;
 
 	constructor(private authenticationService: AuthenticationService) {
-
 	}
 
 	ngOnInit() {
 		this.getItems();
 	}
-
 
 	getItems() {
 		this.authenticationService.getItems()
@@ -25,5 +25,9 @@ export class ContentViewComponent implements OnInit {
 				(items) =>
 					this.items = items
 			);
+	}
+
+	logout() {
+		this.authenticationService.logout();
 	}
 }

@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+
 import { ContentViewRoutingModule } from './content-view-routing.module';
 import { ContentViewComponent } from './content-view.component';
 
@@ -8,8 +9,7 @@ import { ContentViewComponent } from './content-view.component';
 		CommonModule,
 		ContentViewRoutingModule
 	],
-	declarations: [ContentViewComponent],
-	exports: [ContentViewComponent]
+	declarations: [ContentViewComponent]
 })
 export class ContentViewModule {
 }

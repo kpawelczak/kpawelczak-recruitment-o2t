@@ -30,15 +30,16 @@
 		margin-top: 12px;
 	}
 
-	.login-form-buttons {
-		margin-top: 24px;
+	.login-submit {
 
 		.mat-raised-button {
-			width: 100px;
+			margin-top: 24px;
 		}
 
-		.mat-raised-button:nth-child(2) {
-			margin-left: 12px;
+		.mat-error {
+			display: inline;
+			margin-left: 24px;
 		}
 	}
+
 }

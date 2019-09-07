@@ -1,27 +1,23 @@
 <div class="wrapper">
 	<h2 class="login-header">Login</h2>
 
-	<form [formGroup]="loginForm" (ngSubmit)="login(loginForm.value)">
+	<form [formGroup]="loginForm" (ngSubmit)="login()">
 
 		<div class="login-form">
 
 			<mat-form-field>
 				<input matInput placeholder="Username" formControlName="username">
-				<mat-hint *ngIf="loginForm.get('username').touched">
-					Correct username "zkzjNzKa"
-				</mat-hint>
+				<mat-error *ngIf="!username.valid">This field is required</mat-error>
 			</mat-form-field>
 
 			<mat-form-field>
 				<input matInput type="password" placeholder="Password" formControlName="password">
-				<mat-hint *ngIf="loginForm.get('password').touched">
-					Correct password "jCCmyTlxcFK6"
-				</mat-hint>
+				<mat-error *ngIf="!password.valid">This field is required</mat-error>
 			</mat-form-field>
 
-			<div class="login-form-buttons">
+			<div class="login-submit">
 				<button mat-raised-button color="primary" type="submit">login</button>
-				<button mat-raised-button color="primary" (click)="autoFill()" type="button">Auto-fill</button>
+				<mat-error *ngIf="loginFailed">Username or password is incorrect. Please try again</mat-error>
 			</div>
 
 		</div>
