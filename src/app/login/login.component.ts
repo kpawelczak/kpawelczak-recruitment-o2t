@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { FormBuilder, FormControlName, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { AuthenticationService } from './authentication/authentication.service';
 
@@ -43,9 +43,8 @@ export class LoginComponent {
 			password = this.password.value.toString();
 
 		this.authenticateService.login(username, password)
-			.subscribe((response) => {
-					this.loginFailed = false;
-					this.router.navigate(['content']);
+			.subscribe(() => {
+					this.router.navigate(['item']);
 				},
 				() => {
 					this.loginFailed = true;

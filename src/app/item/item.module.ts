@@ -5,14 +5,14 @@ import { ReactiveFormsModule } from '@angular/forms';
 
 import { MatButtonModule, MatFormFieldModule, MatInputModule } from '@angular/material';
 
-import { ContentViewRoutingModule } from './content-view-routing.module';
-import { ContentViewComponent } from './content-view.component';
+import { ItemRoutingModule } from './item-routing.module';
+import { ItemComponent } from './item.component';
 
 
 @NgModule({
 	imports: [
 		CommonModule,
-		ContentViewRoutingModule,
+		ItemRoutingModule,
 
 		ReactiveFormsModule,
 
@@ -20,7 +20,7 @@ import { ContentViewComponent } from './content-view.component';
 		MatInputModule,
 		MatButtonModule
 	],
-	declarations: [ContentViewComponent]
+	declarations: [ItemComponent]
 })
-export class ContentViewModule {
+export class ItemModule {
 }

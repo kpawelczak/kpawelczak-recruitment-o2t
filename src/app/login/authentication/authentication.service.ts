@@ -2,28 +2,30 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
-import { Observable } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
+import { tap } from 'rxjs/operators';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 
 @Injectable({ providedIn: 'root' })
 export class AuthenticationService {
 
-	httpOptions = {
+	private loggedIn$ = new BehaviorSubject(false);
+
+	private httpOptions = {
 		headers: new HttpHeaders({
 			'Content-Type': 'application/json',
 			'Authorization': 'token'
 		})
 	};
 
-	url = 'http://frontend-recruitment.one2tribe.pl:8080';
+	private readonly url: string = 'http://frontend-recruitment.one2tribe.pl:8080';
 
 	constructor(private http: HttpClient,
 				private router: Router) {
 		this.addTokenToHeader();
 	}
 
-	login(username: string, password: string) {
+	login(username: string, password: string): Observable<any> {
 		return this.http.post(this.url + '/api/authenticate',
 			{ username: username, password: password },
 			{ observe: 'response' })
@@ -31,41 +33,29 @@ export class AuthenticationService {
 					   tap((res) => {
 						   const bearerHeader = res.headers.get('authorization');
 						   localStorage.setItem('token', `${bearerHeader}`);
-						   // bearer = bearerHeader.split(' ');
-						   // console.log(bearer[1]);
 
 						   this.httpOptions.headers =
 							   this.httpOptions.headers.set('Authorization', `${localStorage.getItem('token')}`);
+						   this.loggedIn$.next(true);
 					   })
 				   );
 	}
 
-	logout() {
+	logout(): void {
+		this.loggedIn$.next(false);
 		localStorage.removeItem('token');
 		this.router.navigate(['login']);
 	}
 
-	getItems(): Observable<any> {
-		return this.http.get(this.url + '/api/v1/item', this.httpOptions)
-				   .pipe(
-					   map((request) => {
-						   return request;
-					   })
-				   );
+	isLoggedIn(): Observable<boolean> {
+		return this.loggedIn$.asObservable();
 	}
 
-	addItem() {
-		const name = JSON.stringify({ name: 'zkzjNzKa' });
-
-		return this.http.post(this.url + '/api/v1/item', name, this.httpOptions)
-				   .subscribe(
-					   (res) => {
-						   // Object.assign(res, name);
-					   }
-				   );
+	getHttpOptions() {
+		return this.httpOptions;
 	}
 
-	addTokenToHeader() {
+	private addTokenToHeader(): void {
 		if (localStorage.getItem('token')) {
 			this.httpOptions.headers =
 				this.httpOptions.headers.set('Authorization', `${localStorage.getItem('token')}`);

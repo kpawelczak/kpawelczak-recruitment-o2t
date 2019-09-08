@@ -1,0 +1,47 @@
+<div class="app-item">
+
+	<div class="displayed-items-wrapper">
+
+		<h1 class="elements-title">Items</h1>
+
+		<div *ngIf="itemsLoaded else itemsError">
+			<div *ngFor="let item of items;  let index = index" class="displayed-items">
+				#{{index + 1}}: {{item.name | json}}
+			</div>
+		</div>
+
+	</div>
+
+	<div class="item-form-wrapper">
+
+		<form [formGroup]="contentForm" (ngSubmit)="addItem()">
+
+			<h1 class="elements-title">Add item</h1>
+
+			<div class="item-form">
+
+				<mat-form-field>
+					<textarea matInput
+							  cdkTextareaAutosize
+							  placeholder="Item"
+							  formControlName="item"
+							  type="text">
+					</textarea>
+					<mat-error *ngIf="!item.valid">This field is required</mat-error>
+				</mat-form-field>
+
+				<div class="item-submit">
+					<button mat-raised-button color="primary" type="submit">Add</button>
+				</div>
+
+			</div>
+
+		</form>
+
+	</div>
+
+</div>
+
+<ng-template #itemsError>
+	<mat-error class="items-error">Unable to load items</mat-error>
+</ng-template>

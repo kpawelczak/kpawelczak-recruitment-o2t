@@ -32,7 +32,7 @@
 							},
 							"src/styles/styles.scss",
 							"src/styles/login/login.scss",
-							"src/styles/content-view/content-view.scss"
+							"src/styles/item/item.scss"
 						],
 						"scripts": []
 					},

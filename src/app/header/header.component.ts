@@ -10,21 +10,18 @@ import { AuthenticationService } from '../login/authentication/authentication.se
 })
 export class HeaderComponent {
 
+	isLogged: boolean = false;
+
 	constructor(private authenticationService: AuthenticationService) {
+
+		this.authenticationService.isLoggedIn()
+			.subscribe((logged) => {
+				this.isLogged = logged;
+			});
 	}
 
-	logout() {
-		if (localStorage.getItem('token')) {
-			this.authenticationService.logout();
-		}
-	}
-
-	isLoggedIn() {
-		if (localStorage.getItem('token')) {
-			return 'logout';
-		} else {
-			return 'sign in';
-		}
+	logout(): void {
+		this.authenticationService.logout();
 	}
 
 }
