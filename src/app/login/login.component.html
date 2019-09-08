@@ -1,5 +1,5 @@
-<div class="wrapper">
-	<h2 class="login-header">Login</h2>
+<div class="app-login">
+	<h2 class="login-title">Login</h2>
 
 	<form [formGroup]="loginForm" (ngSubmit)="login()">
 
@@ -16,7 +16,7 @@
 			</mat-form-field>
 
 			<div class="login-submit">
-				<button mat-raised-button color="primary" type="submit">login</button>
+				<button mat-raised-button color="primary" type="submit">Login</button>
 				<mat-error *ngIf="loginFailed">Username or password is incorrect. Please try again</mat-error>
 			</div>
 

@@ -8,6 +8,7 @@ import { AppComponent } from './app.component';
 import { routes } from './app.routes';
 
 import { LoginModule } from './login/login.module';
+import { HeaderComponent } from './header/header.component';
 
 
 @NgModule({
@@ -16,10 +17,12 @@ import { LoginModule } from './login/login.module';
 		BrowserAnimationsModule,
 		HttpClientModule,
 		LoginModule,
+
 		RouterModule.forRoot(routes)
 	],
 	declarations: [
-		AppComponent
+		AppComponent,
+		HeaderComponent
 	],
 	bootstrap: [
 		AppComponent

@@ -1,4 +1,36 @@
-<div>
-	{{items | json}}
+<div class="app-content-view">
+
+	<div class="content-form-wrapper">
+
+		<form [formGroup]="contentForm" (ngSubmit)="addItem()">
+
+			<h1 class="elements-title">Add comment</h1>
+
+			<div class="content-form">
+
+				<mat-form-field>
+					<textarea matInput cdkTextareaAutosize placeholder="Comment" formControlName="name" type="text"></textarea>
+					<mat-error *ngIf="!name.valid">This field is required</mat-error>
+				</mat-form-field>
+
+				<div class="content-submit">
+					<button mat-raised-button color="primary" type="submit">Add</button>
+				</div>
+
+			</div>
+
+		</form>
+
+	</div>
+
+	<div class="content-items-wrapper">
+
+		<h1 class="elements-title">Comments</h1>
+
+		<div *ngFor="let item of items;  let index = index" class="content-items">
+			#{{index + 1}}: {{item.name}}
+		</div>
+
+	</div>
+
 </div>
-<button (click)="logout()">logout</button>
