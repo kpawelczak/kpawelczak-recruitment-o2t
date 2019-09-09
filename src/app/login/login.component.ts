@@ -30,7 +30,7 @@ export class LoginComponent implements OnDestroy {
 	}
 
 	ngOnDestroy() {
-		this.loginSubscription.unsubscribe();
+		this.loginSubUnsubscribe();
 	}
 
 	get username(): AbstractControl {
@@ -59,6 +59,12 @@ export class LoginComponent implements OnDestroy {
 						this.loginFailed = true;
 					}
 				);
+	}
+
+	loginSubUnsubscribe() {
+		if (this.loginSubscription) {
+			this.loginSubscription.unsubscribe();
+		}
 	}
 
 }
