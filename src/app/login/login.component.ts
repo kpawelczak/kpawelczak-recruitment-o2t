@@ -1,39 +1,46 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { AuthenticationService } from './authentication/authentication.service';
+import { Subscription } from 'rxjs';
 
 
 @Component({
 	selector: 'app-login',
 	templateUrl: './login.component.html'
 })
-export class LoginComponent {
+export class LoginComponent implements OnDestroy {
 
 	loginForm: FormGroup;
 
 	loginFailed: boolean = false;
+
+	loginSubscription: Subscription;
 
 	constructor(private formBuilder: FormBuilder,
 				private authenticateService: AuthenticationService,
 				private router: Router) {
 
 		this.loginForm = formBuilder.group({
-			'username': [['zkzjNzKa'], [Validators.required]],
-			'password': [['jCCmyTlxcFK6'], [Validators.required]]
+			'username': ['', [Validators.required]],
+			'password': ['', [Validators.required]]
 		});
 	}
 
-	get username() {
+	ngOnDestroy() {
+		this.loginSubscription.unsubscribe();
+	}
+
+	get username(): AbstractControl {
 		return this.loginForm.controls['username'];
 	}
 
-	get password() {
+	get password(): AbstractControl {
 		return this.loginForm.controls['password'];
 	}
 
-	login() {
+	login(): void {
 
 		if (this.loginForm.invalid) {
 			return;
@@ -42,14 +49,15 @@ export class LoginComponent {
 		const username = this.username.value.toString(),
 			password = this.password.value.toString();
 
-		this.authenticateService.login(username, password)
-			.subscribe(() => {
-					this.router.navigate(['item']);
-				},
-				() => {
-					this.loginFailed = true;
-				}
-			);
+		this.loginSubscription =
+			this.authenticateService.login(username, password)
+				.subscribe(() => {
+						this.router.navigate(['item']);
+					},
+					() => {
+						this.loginFailed = true;
+					}
+				);
 	}
 
 }

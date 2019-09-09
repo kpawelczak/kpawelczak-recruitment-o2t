@@ -5,6 +5,7 @@ import { Observable, throwError } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { AuthenticationService } from '../login/authentication/authentication.service';
+import { Item } from './item';
 
 
 @Injectable({ providedIn: 'root' })
@@ -28,14 +29,16 @@ export class ItemService {
 
 	}
 
-	getItems(): Observable<any> {
+	getItems(): Observable<Array<Item>> {
 
 		this.isLoggedIn();
 
 		return this.http.get(this.url + '/api/v1/item', this.httpOptions)
 				   .pipe(
-					   map((request) => {
-						   return request;
+					   map((dataItems: any) => {
+						   return dataItems.map(
+							   (item) => new Item(item.name, item.id)
+						   );
 					   })
 				   );
 	}
@@ -46,10 +49,10 @@ export class ItemService {
 
 		const postItem = JSON.stringify({ name: `${item}` });
 
-		return this.http.post('this.url' + '/api/v1/item', undefined, this.httpOptions);
+		return this.http.post(this.url + '/api/v1/item', postItem, this.httpOptions);
 	}
 
-	private isLoggedIn() {
+	private isLoggedIn(): Observable<any> {
 		if (!this.isLogged) {
 			return throwError('not logged in');
 		}

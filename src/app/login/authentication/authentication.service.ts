@@ -22,7 +22,7 @@ export class AuthenticationService {
 
 	constructor(private http: HttpClient,
 				private router: Router) {
-		this.addTokenToHeader();
+		this.checkLoginStatus();
 	}
 
 	login(username: string, password: string): Observable<any> {
@@ -36,6 +36,7 @@ export class AuthenticationService {
 
 						   this.httpOptions.headers =
 							   this.httpOptions.headers.set('Authorization', `${localStorage.getItem('token')}`);
+
 						   this.loggedIn$.next(true);
 					   })
 				   );
@@ -55,8 +56,9 @@ export class AuthenticationService {
 		return this.httpOptions;
 	}
 
-	private addTokenToHeader(): void {
+	private checkLoginStatus(): void {
 		if (localStorage.getItem('token')) {
+			this.loggedIn$.next(true);
 			this.httpOptions.headers =
 				this.httpOptions.headers.set('Authorization', `${localStorage.getItem('token')}`);
 		}

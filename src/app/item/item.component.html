@@ -2,11 +2,11 @@
 
 	<div class="displayed-items-wrapper">
 
-		<h1 class="elements-title">Items</h1>
+		<h1 class="elements-title">Items list</h1>
 
 		<div *ngIf="itemsLoaded else itemsError">
-			<div *ngFor="let item of items;  let index = index" class="displayed-items">
-				#{{index + 1}}: {{item.name | json}}
+			<div *ngFor="let item of items;  let index = index" class="displayed-item">
+				#{{index + 1}}: {{item.name}}
 			</div>
 		</div>
 
@@ -14,7 +14,7 @@
 
 	<div class="item-form-wrapper">
 
-		<form [formGroup]="contentForm" (ngSubmit)="addItem()">
+		<form [formGroup]="itemForm" #itemNgForm="ngForm" (ngSubmit)="addItem()">
 
 			<h1 class="elements-title">Add item</h1>
 
@@ -32,6 +32,7 @@
 
 				<div class="item-submit">
 					<button mat-raised-button color="primary" type="submit">Add</button>
+					<mat-error *ngIf="itemWasNotAdded">This item was not added to items list</mat-error>
 				</div>
 
 			</div>

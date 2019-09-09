@@ -1,25 +1,34 @@
-import { Component, OnInit } from '@angular/core';
-import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { AbstractControl, FormBuilder, FormGroup, NgForm, Validators } from '@angular/forms';
 
 import { ItemService } from './item.service';
+import { Item } from './item';
+import { Subscription } from 'rxjs';
 
 
 @Component({
 	selector: 'app-item',
 	templateUrl: './item.component.html'
 })
-export class ItemComponent implements OnInit {
+export class ItemComponent implements OnInit, OnDestroy {
+	@ViewChild('itemNgForm')
+	itemNgForm: NgForm;
 
-	contentForm: FormGroup;
+	itemForm: FormGroup;
 
 	itemsLoaded: boolean = true;
 
-	items: Array<object> = [];
+	itemWasNotAdded: boolean = false;
+
+	items: Array<Item> = [];
+
+	private getItemSubscription: Subscription;
+	private addItemSubscription: Subscription;
 
 	constructor(private itemService: ItemService,
 				private formBuilder: FormBuilder) {
 
-		this.contentForm = formBuilder.group({
+		this.itemForm = formBuilder.group({
 			'item': ['', [Validators.required]]
 		});
 	}
@@ -28,42 +37,49 @@ export class ItemComponent implements OnInit {
 		this.getItems();
 	}
 
+	ngOnDestroy() {
+		this.unsubscribeFromSubscriptions();
+	}
+
 	get item(): AbstractControl {
-		return this.contentForm.controls['item'];
+		return this.itemForm.controls['item'];
 	}
 
 	getItems(): void {
-		this.itemService.getItems()
-			.subscribe(
-				(items) => {
-					this.items = items;
-				},
-				() => {
-					this.itemsLoaded = false;
-				}
-			);
+		this.getItemSubscription =
+			this.itemService.getItems()
+				.subscribe(
+					(items) => {
+						this.items = items;
+					},
+					() => {
+						this.itemsLoaded = false;
+					}
+				);
 	}
 
-	// addItem(): void {
-	//
-	// 	if (this.contentForm.valid) {
-	//
-	// 		let comment = this.name.value.toString();
-	//
-	// 		this.items.push({ name: comment });
-	// 		this.contentForm.reset();
-	//
-	// 	}
-	// }
-
 	addItem(): void {
-		if (this.contentForm.valid) {
+		if (this.itemForm.valid) {
 			let item = this.item.value.toString();
 
-			this.itemService.addItem(item)
-				.subscribe(
-					{ error: (error) => console.log(error) }
-				);
+			this.addItemSubscription =
+				this.itemService.addItem(item)
+					.subscribe(
+						() => {
+							this.itemWasNotAdded = false;
+							this.itemNgForm.resetForm();
+							this.getItems();
+						},
+						() => this.itemWasNotAdded = true
+					);
+		}
+	}
+
+	unsubscribeFromSubscriptions(): void {
+		this.getItemSubscription.unsubscribe();
+
+		if (this.addItemSubscription) {
+			this.addItemSubscription.unsubscribe();
 		}
 	}
 
