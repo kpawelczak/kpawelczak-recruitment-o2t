@@ -76,7 +76,7 @@ export class ItemComponent implements OnInit, OnDestroy {
 		}
 	}
 
-	unsubscribeFromSubscriptions(): void {
+	private unsubscribeFromSubscriptions(): void {
 		this.getItemSubscription.unsubscribe();
 
 		if (this.addItemSubscription) {

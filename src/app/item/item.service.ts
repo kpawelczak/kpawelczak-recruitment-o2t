@@ -30,7 +30,6 @@ export class ItemService {
 	}
 
 	getItems(): Observable<Array<Item>> {
-
 		this.isLoggedIn();
 
 		return this.http.get(this.url + '/api/v1/item', this.httpOptions)
@@ -44,7 +43,6 @@ export class ItemService {
 	}
 
 	addItem(item: string): Observable<any> {
-
 		this.isLoggedIn();
 
 		const postItem = JSON.stringify({ name: `${item}` });

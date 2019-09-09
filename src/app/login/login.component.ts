@@ -1,4 +1,4 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 
@@ -11,13 +11,14 @@ import { AuthenticationService } from './authentication/authentication.service';
 	selector: 'app-login',
 	templateUrl: './login.component.html'
 })
-export class LoginComponent implements OnDestroy {
+export class LoginComponent implements OnInit, OnDestroy {
 
 	loginForm: FormGroup;
 
 	loginFailed: boolean = false;
 
 	loginSubscription: Subscription;
+	loggedInSubscription: Subscription;
 
 	constructor(private formBuilder: FormBuilder,
 				private authenticateService: AuthenticationService,
@@ -29,8 +30,13 @@ export class LoginComponent implements OnDestroy {
 		});
 	}
 
+	ngOnInit() {
+		this.isLogged();
+	}
+
 	ngOnDestroy() {
-		this.loginSubUnsubscribe();
+		this.unsubscribe(this.loginSubscription);
+		this.unsubscribe(this.loggedInSubscription);
 	}
 
 	get username(): AbstractControl {
@@ -61,9 +67,20 @@ export class LoginComponent implements OnDestroy {
 				);
 	}
 
-	loginSubUnsubscribe() {
-		if (this.loginSubscription) {
-			this.loginSubscription.unsubscribe();
+	isLogged(): void {
+		this.authenticateService.isLoggedIn()
+			.subscribe(
+				(loggedIn) => {
+					if (loggedIn) {
+						this.router.navigate(['item']);
+					}
+				}
+			);
+	}
+
+	private unsubscribe(subscription: Subscription): void {
+		if (subscription) {
+			subscription.unsubscribe();
 		}
 	}
 
