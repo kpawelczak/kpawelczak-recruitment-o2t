@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
-import { Observable, throwError } from 'rxjs';
+import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { AuthenticationService } from '../login/authentication/authentication.service';
@@ -30,8 +30,6 @@ export class ItemService {
 	}
 
 	getItems(): Observable<Array<Item>> {
-		this.isLoggedIn();
-
 		return this.http.get(this.url + '/api/v1/item', this.httpOptions)
 				   .pipe(
 					   map((dataItems: any) => {
@@ -43,16 +41,9 @@ export class ItemService {
 	}
 
 	addItem(item: string): Observable<any> {
-		this.isLoggedIn();
-
 		const postItem = JSON.stringify({ name: `${item}` });
 
 		return this.http.post(this.url + '/api/v1/item', postItem, this.httpOptions);
 	}
 
-	private isLoggedIn(): Observable<any> {
-		if (!this.isLogged) {
-			return throwError('not logged in');
-		}
-	}
 }
