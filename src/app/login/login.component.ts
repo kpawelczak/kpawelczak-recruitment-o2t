@@ -2,8 +2,9 @@ import { Component, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 
-import { AuthenticationService } from './authentication/authentication.service';
 import { Subscription } from 'rxjs';
+
+import { AuthenticationService } from './authentication/authentication.service';
 
 
 @Component({
