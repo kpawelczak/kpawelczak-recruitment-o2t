@@ -11,7 +11,7 @@ import { Item } from './item';
 @Injectable({ providedIn: 'root' })
 export class ItemService {
 
-	private readonly url: string = 'http://frontend-recruitment.one2tribe.pl:8080';
+	private readonly url: string = '';
 
 	private httpOptions;
 
