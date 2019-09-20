@@ -18,7 +18,7 @@ export class AuthenticationService {
 		})
 	};
 
-	private readonly url: string = 'http://frontend-recruitment.one2tribe.pl:8080';
+	private readonly url: string = '';
 
 	constructor(private http: HttpClient,
 				private router: Router) {
